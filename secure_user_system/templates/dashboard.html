@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure User System</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-900 text-white">
+
+<div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="w-72 bg-white/10 backdrop-blur-xl border-r border-white/20 p-6 hidden lg:block">
+        <h1 class="text-2xl font-extrabold mb-2">Secure<span class="text-blue-300">User</span></h1>
+        <p class="text-sm text-blue-200 mb-8">System zarządzania kontami</p>
+
+        <nav class="space-y-3">
+            <a href="{% url 'dashboard' %}" class="block px-4 py-3 rounded-2xl bg-white/20 font-semibold">Dashboard</a>
+            <a href="{% url 'users_list' %}" class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">Użytkownicy</a>
+            <a href="{% url 'admin:auth_user_add' %}" class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">Rejestracja kont</a>
+            <a href="{% url 'roles' %}" class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">Role i dostęp</a>
+            <a href="#security-section" class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">Zabezpieczenia</a>
+            <a href="{% url 'logout' %}" class="block px-4 py-3 rounded-2xl bg-red-500/20 text-red-200 hover:bg-red-500/30">Wyloguj</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 p-6 lg:p-10">
+
+        <!-- HEADER -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
+            <div>
+                <p class="text-blue-200 text-sm">Temat 17</p>
+                <h1 class="text-4xl font-extrabold mt-1">Bezpieczny system zarządzania kontami</h1>
+                <p class="text-blue-200 mt-2">
+                    Centrum zarządzania użytkownikami, rolami i bezpieczeństwem aplikacji.
+                </p>
+            </div>
+
+            <a href="{% url 'admin:auth_user_add' %}" class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 font-semibold text-center">
+                + Dodaj użytkownika
+            </a>
+        </div>
+
+        <!-- SZYBKIE MODUŁY -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+            <a href="{% url 'users_list' %}" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl hover:bg-white/20 transition">
+                <p class="text-4xl mb-4">👥</p>
+                <h2 class="text-2xl font-bold">Użytkownicy</h2>
+                <p class="text-blue-200 text-sm mt-2">Przegląd kont, statusów oraz akcje administracyjne.</p>
+                <p class="text-blue-300 font-semibold mt-5">Przejdź do modułu →</p>
+            </a>
+
+            <a href="{% url 'roles' %}" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl hover:bg-white/20 transition">
+                <p class="text-4xl mb-4">🛡️</p>
+                <h2 class="text-2xl font-bold">Role i dostęp</h2>
+                <p class="text-blue-200 text-sm mt-2">Sprawdź role użytkowników oraz zakres ich uprawnień.</p>
+                <p class="text-blue-300 font-semibold mt-5">Zobacz uprawnienia →</p>
+            </a>
+
+            <a href="#security-section" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl hover:bg-white/20 transition">
+                <p class="text-4xl mb-4">🔐</p>
+                <h2 class="text-2xl font-bold">Zabezpieczenia</h2>
+                <p class="text-blue-200 text-sm mt-2">Opis mechanizmów chroniących konta i dostęp do systemu.</p>
+                <p class="text-blue-300 font-semibold mt-5">Sprawdź zabezpieczenia →</p>
+            </a>
+
+        </div>
+
+        <!-- STATYSTYKI -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <p class="text-blue-200">Wszyscy użytkownicy</p>
+                <h2 class="text-5xl font-extrabold mt-3">{{ total_users }}</h2>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <p class="text-blue-200">Aktywne konta</p>
+                <h2 class="text-5xl font-extrabold mt-3">{{ active_users }}</h2>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <p class="text-blue-200">Administratorzy</p>
+                <h2 class="text-5xl font-extrabold mt-3">{{ admin_users }}</h2>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <p class="text-blue-200">Nowe konta</p>
+                <h2 class="text-5xl font-extrabold mt-3">{{ new_users }}</h2>
+            </div>
+
+        </div>
+
+        <!-- WYKRES DONUT + FUNKCJE SYSTEMU -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+
+            <!-- CZYTELNY WYKRES -->
+            <section class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <h2 class="text-2xl font-bold mb-2">Podsumowanie systemu</h2>
+                <p class="text-blue-200 text-sm mb-6">
+                    Czytelny podgląd najważniejszych danych o kontach użytkowników.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+
+                    <div class="max-w-xs mx-auto">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+
+                    <div class="space-y-4">
+
+                        <div class="flex items-center justify-between p-4 rounded-2xl bg-white/10">
+                            <div>
+                                <p class="text-blue-200 text-sm">Wszyscy użytkownicy</p>
+                                <p class="text-2xl font-extrabold">{{ total_users }}</p>
+                            </div>
+                            <span class="text-3xl">👥</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 rounded-2xl bg-emerald-500/10 border border-emerald-400/20">
+                            <div>
+                                <p class="text-emerald-300 text-sm">Aktywne konta</p>
+                                <p class="text-2xl font-extrabold">{{ active_users }}</p>
+                            </div>
+                            <span class="text-3xl">🟢</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 rounded-2xl bg-purple-500/10 border border-purple-400/20">
+                            <div>
+                                <p class="text-purple-300 text-sm">Administratorzy</p>
+                                <p class="text-2xl font-extrabold">{{ admin_users }}</p>
+                            </div>
+                            <span class="text-3xl">👑</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20">
+                            <div>
+                                <p class="text-amber-300 text-sm">Nowe konta</p>
+                                <p class="text-2xl font-extrabold">{{ new_users }}</p>
+                            </div>
+                            <span class="text-3xl">🆕</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- FUNKCJE SYSTEMU -->
+            <section class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <h2 class="text-2xl font-bold mb-5">Funkcje systemu</h2>
+
+                <div class="space-y-4">
+                    <div class="p-4 rounded-2xl bg-white/10">
+                        <p class="font-semibold">Rejestracja użytkowników</p>
+                        <p class="text-blue-200 text-sm">Tworzenie nowych kont przez administratora w panelu Django.</p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/10">
+                        <p class="font-semibold">Logowanie do systemu</p>
+                        <p class="text-blue-200 text-sm">Dostęp do panelu tylko dla zalogowanych użytkowników.</p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/10">
+                        <p class="font-semibold">Edycja i usuwanie kont</p>
+                        <p class="text-blue-200 text-sm">Administrator może zarządzać kontami użytkowników.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ZABEZPIECZENIA -->
+        <section id="security-section" class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+            <h2 class="text-2xl font-bold mb-5">Zabezpieczenia systemu</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+                <div class="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-400/20">
+                    <p class="font-semibold text-emerald-300">Bezpieczne hasła</p>
+                    <p class="text-blue-200 text-sm mt-2">
+                        Django nie przechowuje zwykłych haseł, tylko ich bezpieczne skróty.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-blue-500/10 border border-blue-400/20">
+                    <p class="font-semibold text-blue-300">Kontrola dostępu</p>
+                    <p class="text-blue-200 text-sm mt-2">
+                        Widoki administracyjne są chronione przez mechanizm logowania.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-purple-500/10 border border-purple-400/20">
+                    <p class="font-semibold text-purple-300">Role użytkowników</p>
+                    <p class="text-blue-200 text-sm mt-2">
+                        System rozróżnia administratora, moderatora i zwykłego użytkownika.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+const ctx = document.getElementById('usersChart');
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Aktywne konta', 'Administratorzy', 'Nowe konta'],
+        datasets: [{
+            data: [
+                {{ active_users }},
+                {{ admin_users }},
+                {{ new_users }}
+            ],
+            backgroundColor: [
+                'rgba(16, 185, 129, 0.85)',
+                'rgba(168, 85, 247, 0.85)',
+                'rgba(245, 158, 11, 0.85)'
+            ],
+            borderColor: 'rgba(255,255,255,0.25)',
+            borderWidth: 2,
+            hoverOffset: 8
+        }]
+    },
+    options: {
+        cutout: '68%',
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: '#bfdbfe',
+                    padding: 18,
+                    font: {
+                        size: 13,
+                        weight: 'bold'
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

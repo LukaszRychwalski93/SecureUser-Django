@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Moderatora</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#0f172a;
+    color:#f8fafc;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#111827;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:700;
+}
+
+.logo span{
+    color:#f59e0b;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.nav a{
+    padding:12px;
+    border-radius:12px;
+    text-decoration:none;
+    color:#94a3b8;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:#1f2937;
+    color:white;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    font-size:28px;
+}
+
+.header p{
+    color:#94a3b8;
+}
+
+.btn{
+    background:#f59e0b;
+    border:none;
+    padding:10px 16px;
+    border-radius:12px;
+    color:black;
+    font-weight:600;
+}
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:#182235;
+    padding:20px;
+    border-radius:16px;
+}
+
+.card h3{
+    font-size:14px;
+    color:#94a3b8;
+}
+
+.card p{
+    font-size:24px;
+    font-weight:700;
+    margin-top:8px;
+}
+
+/* TABLE */
+.table{
+    background:#182235;
+    padding:20px;
+    border-radius:16px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:12px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    text-align:left;
+}
+
+th{
+    color:#94a3b8;
+}
+
+.status{
+    padding:5px 10px;
+    border-radius:999px;
+    font-size:12px;
+}
+
+.ok{background:#22c55e33;color:#22c55e;}
+.bad{background:#ef444433;color:#ef4444;}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">Secure<span>Mod</span></div>
+
+    <div class="nav">
+        <a class="active" href="{% url 'moderator_dashboard' %}">Dashboard</a>
+        <a href="#">Zgłoszenia</a>
+        <a href="#">Użytkownicy</a>
+        <a href="{% url 'logout' %}">Wyloguj</a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="header">
+        <div>
+            <h1>Panel moderatora</h1>
+            <p>Moderacja systemu</p>
+        </div>
+
+        <button class="btn">Sprawdź zgłoszenia</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+
+        <div class="card">
+            <h3>Użytkownicy</h3>
+            <p>{{ users_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Aktywni</h3>
+            <p>{{ active_users }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Nowi</h3>
+            <p>{{ new_users|length }}</p>
+        </div>
+
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="table">
+
+        <h2 style="margin-bottom:15px;">Ostatni użytkownicy</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Login</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.is_active %}
+                            <span class="status ok">aktywny</span>
+                        {% else %}
+                            <span class="status bad">nieaktywny</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Brak użytkowników</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

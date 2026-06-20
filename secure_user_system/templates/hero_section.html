@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure User System</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-[#f5f7fb] text-slate-900">
+
+<section class="min-h-screen relative overflow-hidden">
+
+    <!-- TŁO -->
+    <div class="absolute inset-0 bg-gradient-to-br from-white via-blue-50 to-indigo-100"></div>
+    <div class="absolute top-[-160px] right-[-160px] w-[520px] h-[520px] bg-blue-300/40 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-[-180px] left-[-180px] w-[520px] h-[520px] bg-indigo-300/40 rounded-full blur-3xl"></div>
+
+    <!-- NAV -->
+    <header class="relative z-10 max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+        <div class="text-2xl font-extrabold">
+            Secure<span class="text-blue-600">User</span>
+        </div>
+
+        <a href="/about-me/" class="hidden sm:inline-flex px-5 py-2.5 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition">
+            O autorze
+        </a>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 pt-16 pb-20 grid lg:grid-cols-12 gap-12 items-center">
+
+        <!-- LEFT -->
+        <div class="lg:col-span-7">
+
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-sm mb-6">
+                Projekt Django • Zarządzanie kontami użytkowników
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
+                Bezpieczne konta.
+                <span class="block text-blue-600">Pełna kontrola dostępu.</span>
+            </h1>
+
+            <p class="max-w-2xl mt-6 text-lg md:text-xl text-slate-600 leading-relaxed">
+                Aplikacja webowa do zarządzania użytkownikami, rolami i uprawnieniami.
+                System wykorzystuje logowanie, panel administratora oraz bezpieczne
+                przechowywanie haseł oferowane przez Django.
+            </p>
+
+            <!-- BUTTONS -->
+            <div class="flex flex-col sm:flex-row gap-4 mt-9">
+
+                <a href="/dashboard/"
+                   class="inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-xl shadow-blue-600/20 transition">
+                    Otwórz Dashboard
+                </a>
+
+                <a href="/about-me/"
+                   class="inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold transition">
+                    O autorze
+                </a>
+
+            </div>
+
+            <!-- MINI FEATURES -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12">
+
+                <div class="bg-white/80 backdrop-blur border border-slate-200 rounded-3xl p-5 shadow-sm">
+                    <div class="text-3xl mb-3">👥</div>
+                    <h3 class="font-bold">Użytkownicy</h3>
+                    <p class="text-sm text-slate-500 mt-1">Dodawanie, edycja i usuwanie kont.</p>
+                </div>
+
+                <div class="bg-white/80 backdrop-blur border border-slate-200 rounded-3xl p-5 shadow-sm">
+                    <div class="text-3xl mb-3">🛡️</div>
+                    <h3 class="font-bold">Role</h3>
+                    <p class="text-sm text-slate-500 mt-1">Administrator, moderator i użytkownik.</p>
+                </div>
+
+                <div class="bg-white/80 backdrop-blur border border-slate-200 rounded-3xl p-5 shadow-sm">
+                    <div class="text-3xl mb-3">🔐</div>
+                    <h3 class="font-bold">Bezpieczeństwo</h3>
+                    <p class="text-sm text-slate-500 mt-1">Hasła hash, sesje i kontrola dostępu.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="lg:col-span-5">
+
+            <div class="relative">
+
+                <div class="absolute -inset-6 bg-blue-500/20 rounded-[3rem] blur-3xl"></div>
+
+                <div class="relative bg-white border border-slate-200 rounded-[2rem] shadow-2xl overflow-hidden">
+
+                    <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500">Admin Dashboard</p>
+                            <h2 class="font-extrabold text-xl">System overview</h2>
+                        </div>
+
+                        <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-bold">
+                            Secure
+                        </span>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="rounded-3xl bg-blue-50 p-5">
+                                <p class="text-sm text-blue-700 font-semibold">Users</p>
+                                <p class="text-4xl font-extrabold mt-2">24</p>
+                            </div>
+
+                            <div class="rounded-3xl bg-indigo-50 p-5">
+                                <p class="text-sm text-indigo-700 font-semibold">Roles</p>
+                                <p class="text-4xl font-extrabold mt-2">3</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-3xl bg-slate-50 p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="font-bold">Security status</p>
+                                <span class="text-emerald-600 font-bold">Active</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-500">Authentication</span>
+                                    <span class="font-semibold">Enabled</span>
+                                </div>
+
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-500">Password hashing</span>
+                                    <span class="font-semibold">Django</span>
+                                </div>
+
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-500">Access control</span>
+                                    <span class="font-semibold">Roles</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-3xl bg-slate-900 text-white p-5">
+                            <p class="text-sm text-blue-200">Current modules</p>
+
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Dashboard</span>
+                                <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Users</span>
+                                <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Roles</span>
+                                <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Security</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

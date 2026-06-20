@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role i dostęp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-900 text-white">
+
+<div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="w-72 bg-white/10 backdrop-blur-xl border-r border-white/20 p-6 hidden lg:block">
+
+        <h1 class="text-2xl font-extrabold mb-2">
+            Secure<span class="text-blue-300">User</span>
+        </h1>
+
+        <p class="text-sm text-blue-200 mb-8">
+            System zarządzania kontami
+        </p>
+
+        <nav class="space-y-3">
+
+            <a href="{% url 'dashboard' %}"
+               class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">
+                Dashboard
+            </a>
+
+            <a href="{% url 'dashboard' %}#users-section"
+               class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">
+                Użytkownicy
+            </a>
+
+            <a href="{% url 'admin:auth_user_add' %}"
+               class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">
+                Rejestracja kont
+            </a>
+
+            <a href="{% url 'roles' %}"
+               class="block px-4 py-3 rounded-2xl bg-white/20 font-semibold">
+                Role i dostęp
+            </a>
+
+            <a href="{% url 'dashboard' %}#security-section"
+               class="block px-4 py-3 rounded-2xl hover:bg-white/10 text-blue-100">
+                Zabezpieczenia
+            </a>
+
+            <a href="{% url 'logout' %}"
+               class="block px-4 py-3 rounded-2xl bg-red-500/20 text-red-200 hover:bg-red-500/30">
+                Wyloguj
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 p-6 lg:p-10">
+
+        <!-- HEADER -->
+        <div class="mb-8">
+            <p class="text-blue-200 text-sm">
+                Kontrola dostępu
+            </p>
+
+            <h1 class="text-4xl font-extrabold mt-1">
+                Role i uprawnienia użytkowników
+            </h1>
+
+            <p class="text-blue-200 mt-2">
+                Zarządzanie rolami oraz kontrolą dostępu w systemie.
+            </p>
+        </div>
+
+        <!-- KARTY RÓL -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <h2 class="text-xl font-bold text-red-300 mb-3">
+                    Administrator
+                </h2>
+
+                <p class="text-blue-200 text-sm">
+                    Pełny dostęp do systemu. Może dodawać, edytować
+                    i usuwać użytkowników, zarządzać rolami oraz
+                    korzystać z panelu administracyjnego Django.
+                </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <h2 class="text-xl font-bold text-purple-300 mb-3">
+                    Moderator
+                </h2>
+
+                <p class="text-blue-200 text-sm">
+                    Ograniczony dostęp administracyjny.
+                    Może przeglądać dane i wykonywać wybrane
+                    operacje administracyjne.
+                </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+                <h2 class="text-xl font-bold text-blue-300 mb-3">
+                    Użytkownik
+                </h2>
+
+                <p class="text-blue-200 text-sm">
+                    Może logować się do systemu i korzystać
+                    z podstawowych funkcji aplikacji.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- TABELA RÓL -->
+        <section class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">
+                    Lista uprawnień użytkowników
+                </h2>
+
+                <p class="text-blue-200 text-sm mt-1">
+                    Podgląd aktualnych ról i zakresu dostępu.
+                </p>
+            </div>
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-left">
+
+                    <thead>
+                        <tr class="border-b border-white/10 text-blue-200">
+                            <th class="py-4">Login</th>
+                            <th class="py-4">Email</th>
+                            <th class="py-4">Rola</th>
+                            <th class="py-4">Status</th>
+                            <th class="py-4">Uprawnienia</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for user in users %}
+
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition">
+
+                            <td class="py-4 font-semibold">
+                                {{ user.username }}
+                            </td>
+
+                            <td class="py-4 text-slate-300">
+                                {{ user.email }}
+                            </td>
+
+                            <td class="py-4">
+
+                                {% if user.is_superuser %}
+                                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs font-semibold">
+                                        Administrator
+                                    </span>
+
+                                {% elif user.is_staff %}
+                                    <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-semibold">
+                                        Moderator
+                                    </span>
+
+                                {% else %}
+                                    <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                                        Użytkownik
+                                    </span>
+                                {% endif %}
+
+                            </td>
+
+                            <td class="py-4">
+
+                                {% if user.is_active %}
+                                    <span class="text-emerald-300">
+                                        aktywne
+                                    </span>
+                                {% else %}
+                                    <span class="text-red-300">
+                                        zablokowane
+                                    </span>
+                                {% endif %}
+
+                            </td>
+
+                            <td class="py-4 text-slate-300">
+
+                                {% if user.is_superuser %}
+                                    Pełne zarządzanie systemem.
+
+                                {% elif user.is_staff %}
+                                    Ograniczone funkcje administracyjne.
+
+                                {% else %}
+                                    Dostęp do podstawowych funkcji.
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+                            <td colspan="5" class="py-8 text-center text-blue-200">
+                                Brak użytkowników.
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
